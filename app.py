@@ -47,12 +47,9 @@ class Twitter:
 
     def get_tweets(self):
          while True:
-             try:
-                 sleep(1)
-                 new_tweets = [f"https://twitter.com{tweet['tweetUrl']}" for tweet in get_tweets(self.twitter_username, pages=1)]
-                 return new_tweets[0]
-             except:
-                 continue
+             sleep(1)
+             new_tweets = [f"https://twitter.com{tweet['tweetUrl']}" for tweet in get_tweets(self.twitter_username, pages=1)]
+             return new_tweets[0]
 
 
 def main():
@@ -61,7 +58,7 @@ def main():
     t = Telegram()
     y = YouTube()
     tw = Twitter()
-    
+
     try:
         while True:
             new_video_url = y.get_videos()
