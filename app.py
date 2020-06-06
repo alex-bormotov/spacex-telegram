@@ -31,7 +31,9 @@ class YouTube:
             if res.ok and len(res.content) != 0:
                 ress = str(res.content).split(' ')
                 youtube_urls = [i.replace('href="', 'https://youtube.com') for i in ress if 'href="/watch?' in i]
-                return [u[:-1] for u in list(dict.fromkeys(youtube_urls))][:-1][0]
+                y_urls = [u[:-1] for u in list(dict.fromkeys(youtube_urls))][:-1]
+                if len(y_urls) != 0:
+                    return y_urls[0]
 
 
 class Twitter:
@@ -42,7 +44,8 @@ class Twitter:
          while True:
              sleep(1)
              new_tweets = [f"https://twitter.com{tweet['tweetUrl']}" for tweet in get_tweets(self.twitter_username, pages=1)]
-             return new_tweets[0]
+             if len(new_tweets) != 0:
+                 return new_tweets[0]
 
 
 def main():
