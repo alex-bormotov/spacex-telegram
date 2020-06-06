@@ -1,5 +1,6 @@
 {
     "youtube_channel_username": "spacexchannel",
     "telegram_token": "",
-    "telegram_chai_id": ""
+    "telegram_chai_id": "",
+    "twitter_username": "SpaceX"
 }

@@ -1,6 +1,6 @@
 # SpaceX-Telegram
 
-> Bot follow Official SpaceX youtube channel and sends updates to telegram channel
+> Bot follow official SpaceX youtube and twitter channels and sends updates to telegram channel
 
 ![](https://github.com/alex-bormotov/spacex-telegram/workflows/Github-CICD/badge.svg)   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/138eb3776f71492ebcb77edc3d37a5d7)](https://www.codacy.com/manual/alex-bormotov/spacex-telegram?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alex-bormotov/spacex-telegram&amp;utm_campaign=Badge_Grade)
 
