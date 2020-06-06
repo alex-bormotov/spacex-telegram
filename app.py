@@ -3,10 +3,8 @@ import requests
 from time import sleep
 from twitter_scraper import get_tweets
 
-
 latest_video_url = ''
 latest_tweet_url = ''
-
 
 def get_config():
     with open("config/config.json", "r") as read_file:
@@ -26,9 +24,6 @@ class YouTube:
     def __init__(self):
         self.url = f"https://www.youtube.com/user/{get_config()['youtube_channel_username']}/videos"
 
-    def rm_duplicates(self, items_list):
-        return list(dict.fromkeys(items_list))
-
     def get_videos(self):
         while True:
             sleep(1)
@@ -36,9 +31,7 @@ class YouTube:
             if res.ok and len(res.content) != 0:
                 ress = str(res.content).split(' ')
                 youtube_urls = [i.replace('href="', 'https://youtube.com') for i in ress if 'href="/watch?' in i]
-                new_video_urls = self.rm_duplicates(youtube_urls)
-                video_url = [un[:-1] for un in new_video_urls][:-1][0]
-                return video_url
+                return [u[:-1] for u in list(dict.fromkeys(youtube_urls))][:-1][0]
 
 
 class Twitter:
@@ -55,6 +48,7 @@ class Twitter:
 def main():
     global latest_video_url
     global latest_tweet_url
+
     t = Telegram()
     y = YouTube()
     tw = Twitter()
@@ -62,13 +56,14 @@ def main():
     try:
         while True:
             new_video_url = y.get_videos()
+            new_tweet_url = tw.get_tweets()
+
             if len(latest_video_url) == 0:
-                latest_tweet_url = new_video_url
+                latest_video_url = new_video_url
             if new_video_url != latest_video_url:
                 latest_video_url = new_video_url
                 t.send_message(latest_video_url)
 
-            new_tweet_url = tw.get_tweets()
             if len(latest_tweet_url) == 0:
                 latest_tweet_url = new_tweet_url
             if new_tweet_url != latest_tweet_url:
