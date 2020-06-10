@@ -1,10 +1,12 @@
 import json
+import praw
 import requests
 from time import sleep
 from twitter_scraper import get_tweets
 
 latest_video_url = ''
 latest_tweet_url = ''
+latest_reddit_url = ''
 
 def get_config():
     with open("config/config.json", "r") as read_file:
@@ -48,18 +50,37 @@ class Twitter:
                  return new_tweets[0]
 
 
+class Reddit:
+    def __init__(self):
+        self.reddit_client_id = get_config()['reddit_client_id']
+        self.reddit_client_secret = get_config()['reddit_client_secret']
+        self.reddit_user_agent = get_config()['reddit_user_agent']
+        self.subreddit = get_config()['subreddit']
+        self.reddit = praw.Reddit(client_id=self.reddit_client_id, client_secret=self.reddit_client_secret, user_agent=self.reddit_user_agent)
+
+    def get_reddit_url(self):
+        while True:
+            sleep(1)
+            reddit_url = [post.url for post in self.reddit.subreddit(self.subreddit).new(limit=1)]
+            if len(reddit_url) != 0:
+                return reddit_url[0]
+
+
 def main():
     global latest_video_url
     global latest_tweet_url
+    global latest_reddit_url
 
     t = Telegram()
     y = YouTube()
     tw = Twitter()
+    rd = Reddit()
 
     try:
         while True:
             new_video_url = y.get_videos()
             new_tweet_url = tw.get_tweets()
+            new_reddit_url = rd.get_reddit_url()
 
             if len(latest_video_url) == 0:
                 latest_video_url = new_video_url
@@ -72,6 +93,12 @@ def main():
             if new_tweet_url != latest_tweet_url:
                 latest_tweet_url = new_tweet_url
                 t.send_message(latest_tweet_url)
+
+            if len(latest_reddit_url) == 0:
+                latest_reddit_url = new_reddit_url
+            if new_reddit_url != latest_reddit_url:
+                latest_reddit_url = new_reddit_url
+                t.send_message(latest_reddit_url)
 
             sleep(300)
     except Exception as e:

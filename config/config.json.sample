@@ -2,5 +2,9 @@
     "youtube_channel_username": "spacexchannel",
     "telegram_token": "",
     "telegram_chai_id": "",
-    "twitter_username": "SpaceX"
+    "twitter_username": "SpaceX",
+    "reddit_client_id": "",
+    "reddit_client_secret": "",
+    "reddit_user_agent": "",
+    "subreddit": "SpaceX"
 }
